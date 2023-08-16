@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Login from './Pages/login';
 import Navbar from './Components/Navbar';
 import AuthWrapper from './context/authContext';
+import EditBook from './Components/EditBook';
 // import Cookies from "js-cookie";
 
 function App() {
@@ -38,10 +39,11 @@ function App() {
     </div>
       <Routes>
       <Route
-      path="/"
+      path="/login"
       element={<Login />}
     ></Route>
-        <Route path="/home" element = {<Homepage/>}  ></Route>
+        <Route path="/" element = {<Homepage/>}  ></Route>
+        <Route path="/edit-book" element = {<EditBook/>}  ></Route>
         <Route path='/books' element = {<Booklist/>}></Route>
         <Route path='/form' element = {<Form/>}></Route>
         <Route path='*' element = {<Pagenot/>}></Route>

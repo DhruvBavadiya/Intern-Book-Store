@@ -12,11 +12,14 @@ const Navbar = () => {
     const handleLogout =()=>{
         userContext.Signout();
     }
+    const handleclick=()=>{
+      navigate("/")
+    }
     return (
         <div>
         <nav style={globalStyle.navbar}>
         <div style={globalStyle.logo}>
-        <img src="https://www.drupal.org/files/styles/grid-4-2x/public/logo-vert-250.png?itok=auyB2fmL" alt ="logo"style={globalStyle.img}/>
+        <img src="https://www.drupal.org/files/styles/grid-4-2x/public/logo-vert-250.png?itok=auyB2fmL" alt ="logo"style={globalStyle.img} onClick={handleclick}/>
         </div>
         <div>
   {isLoggedIn ? <GlobalSearch /> : <> </>}
