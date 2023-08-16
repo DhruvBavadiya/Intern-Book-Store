@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+.form-box{
+  display: flex;
+    flex-direction: column;
+    width: 392px;
+    padding: 13px;
+    margin: 10px;
+    gap: 5px;
+}

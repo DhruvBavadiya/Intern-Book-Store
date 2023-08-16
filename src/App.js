@@ -1,24 +1,55 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Route,Routes } from "react-router-dom"
+import Homepage from './Components/Homepage';
+import Booklist from './Components/Booklist';
+import Pagenot from './Components/Pagenot';
+// import { globalStyle } from './Styles/globalStyle';
+import Form from './Components/Form';
+import { ThemeProvider, createTheme } from '@mui/material';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Login from './Pages/login';
+import Navbar from './Components/Navbar';
+import AuthWrapper from './context/authContext';
+// import Cookies from "js-cookie";
 
 function App() {
+
+  const theme= createTheme({
+      components:{
+        MuiButton:{
+          styleOverrides:{
+            root:{
+              backgroundColor:"red",
+            }
+          }
+        }
+      }
+  })
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <ThemeProvider theme={theme}>
+    <BrowserRouter>
+    <AuthWrapper>
+    <ToastContainer/>
+    <div>
+    <Navbar/>
     </div>
+      <Routes>
+      <Route
+      path="/"
+      element={<Login />}
+    ></Route>
+        <Route path="/home" element = {<Homepage/>}  ></Route>
+        <Route path='/books' element = {<Booklist/>}></Route>
+        <Route path='/form' element = {<Form/>}></Route>
+        <Route path='*' element = {<Pagenot/>}></Route>
+
+      </Routes>
+      </AuthWrapper>
+    </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
