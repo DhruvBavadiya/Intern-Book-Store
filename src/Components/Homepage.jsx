@@ -97,7 +97,7 @@ const Homepage = () => {
             {Array.isArray(filteredBooks) && filteredBooks.map((book, index) => (
               <div key={index} style={{ ...Bookstyle.cardContainer, width: 'calc(33.33% - 20px)' }}>
                 <Card key={index} title={book.name} description={truncateDescription(book.description, 5)} 
-                img={book.base64image} category={book.category} />
+                img={book.base64image} category={book.category} book = {book}/>
               </div>
             ))}
           </div>

@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const initialValues={
@@ -19,31 +19,39 @@ const initialstate = {
 }
 export const AuthContext = createContext(initialstate) 
 
-const AuthWrapper = ({children})=>{
+export const AuthWrapper = ({children})=>{
   const [userData,setUserdata]=useState();
   const navigate = useNavigate()
 
     const setUser = (data)=>{
-      console.log("data",data)
+      // console.log("data",data)
+      console.log("insetUser")
       Cookies.set("userInfo",JSON.stringify(data));
+      console.log(data)
       setUserdata(data);
 
     }
-    const Signout = () =>{
-      Cookies.remove("userInfo");
-      console.log("sign out")
-      navigate("/")
-    }
-
     useEffect(()=>{
-      const data = (Cookies.get("auth_email")) || initialValues
+      const data = JSON.parse(Cookies.get("userInfo")) || initialValues
+      console.log(data)
       // console.log(data,"data")
       if(!data){
-        navigate("/")
+        setUserdata(initialValues);
+        navigate("/login")
       }
 
       setUserdata(data)
     },[])
+
+    const Signout = () =>{
+      Cookies.remove("userInfo");
+      console.log("sign out")
+      setUserdata(initialValues);
+      navigate("/login")
+    }
+
+
+    // console.log("user",userData)
 
     let values={
       setUser,
@@ -53,4 +61,6 @@ const AuthWrapper = ({children})=>{
     return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
   }
 
-export default AuthWrapper;
+  export const useAuthContext = () => {
+    return useContext(AuthContext);
+  };

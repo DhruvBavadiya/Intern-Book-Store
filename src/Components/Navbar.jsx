@@ -4,17 +4,33 @@ import { FaShoppingCart } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import GlobalSearch from './GlobalSearch';
-import { AuthContext } from '../context/authContext';
+import { AuthContext, useAuthContext } from '../context/authContext';
 const Navbar = () => {
     const isLoggedIn = Cookies.get("userInfo"); 
-    const userContext = useContext(AuthContext)
+    const userContext = useAuthContext()
     const navigate = useNavigate()
     const handleLogout =()=>{
-        userContext.Signout();
+
+        Cookies.remove("userInfo");
+        navigate("/login")
+        
     }
     const handleclick=()=>{
       navigate("/")
     }
+
+    const handleCartClick = () => {
+      console.log("Cart clicked");
+      navigate("/cart")
+      // Add your cart logic here
+    };
+    
+    const handlenotCartClick = () => {
+      alert("Login FIrst");
+      // Add your cart logic here
+    };
+    
+    
     return (
         <div>
         <nav style={globalStyle.navbar}>
@@ -30,10 +46,12 @@ const Navbar = () => {
               <Link to="/books" style={globalStyle.link}>
                 Books
               </Link>
-              <Link to="/form" style={globalStyle.link}>
+              <Link to="/updateprof" style={globalStyle.link}>
                 Profile
               </Link>
-              <FaShoppingCart style={globalStyle.cartIcon} />
+              <FaShoppingCart style={globalStyle.cartIcon} 
+              onClick={handleCartClick}
+              />
               <button onClick={handleLogout} style={globalStyle.logoutButton}>
               Logout
             </button>
@@ -48,7 +66,10 @@ const Navbar = () => {
               <Link to="/form" style={globalStyle.link}>
                 Register
               </Link>
-              <FaShoppingCart style={globalStyle.cartIcon} />
+              <FaShoppingCart style={globalStyle.cartIcon} 
+              onClick={handlenotCartClick}
+              />
+              
 
             </>
           )}

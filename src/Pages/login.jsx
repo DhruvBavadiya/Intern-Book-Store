@@ -8,8 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import authservice from "../Service/authService";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import PageHeding from "../Components/PageHeding";
-import { AuthContext } from "../context/authContext";
+import PageHeading from "../Components/PageHeading";
+import { AuthContext, useAuthContext } from "../context/authContext";
 // import loginstyle from "./style"
 // import { useAuthContext } from "../context/authContext";
 
@@ -18,7 +18,8 @@ const Login = () => {
     //   const { setUser, user } = context;
     // console.log(userInfo);
 
-    const userContext = useContext(AuthContext)
+    const userContext = useAuthContext();
+    const { setUser, userData } = userContext;
     const navigate = useNavigate();
     const validationSchema = Yup.object().shape({
         email: Yup.string().email().required("Email is required"),
@@ -32,8 +33,10 @@ const Login = () => {
                 if (res && res.status === 200) {
                     toast.success("User Logged in Successfully!");
                     Cookies.set("auth_email", values.email)
-                    navigate("/home");
-                    userContext.setUser(res.data.result)
+                    Cookies.set("userInfo",JSON.stringify(res.data.result));
+                    // console.log(res.data)
+                    navigate("/");
+                    setUser(res.data.result)
                 }
             })
             .catch((err) => {
@@ -43,7 +46,7 @@ const Login = () => {
     return (
         <>
             <Breadcrumb value="Login" />
-            <PageHeding heading="Login or Create an Account" />
+            <PageHeading heading="Login or Create an Account" />
             <div className="container" style={{ marginTop: 50, display: "flex" }}>
                 <div style={{ width: "45%", marginRight: 50 }}>
                     <h1

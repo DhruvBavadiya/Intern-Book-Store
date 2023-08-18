@@ -4,10 +4,14 @@ import { Bookstyle } from '../Styles/Bookstyle'
 import { Typography } from '@mui/material'
 import bookService from '../Service/bookService'
 import { useNavigate } from 'react-router-dom'
-
+import ConfirmationDialog from "../Components/ConfirmationDialog";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Booklist = () => {
   const [books, setBooks] = useState([])
   const [bookcount, setBookcount] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [id, setId] = useState(0);
   const navigate = useNavigate()
 
   const length = bookcount; // Replace with your desired length
@@ -25,10 +29,28 @@ const Booklist = () => {
     booktableComponents();
   }, [])
  
-  const handleEdit = (e)=>{
-    e.preventDefault()
-    navigate("/edit-book")
-  }
+  const handleDelete = async (id) => {
+    await bookService
+      .DeleteBook(id)
+      .then((res) => {
+        if (res && res.status === 200) {
+          setOpen(false);
+          toast.success("Record deleted successfully!", {
+            position: "bottom-right",
+          });
+          navigate("/books");
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.error, { position: "bottom-right" });
+      });
+  };
+
+
+  // const handleEdit =  (e)=>{
+  //   e.preventDefault()
+  //   navigate(`/edit-book/${book.id}`)
+  // }
 
 
   return (
@@ -37,6 +59,8 @@ const Booklist = () => {
         Book List
       </Typography>
       <hr />
+
+      <button className='btn btn-danger' onClick={()=>{navigate("/edit-book")}}>Add Book</button>
       <table class="table table-hover">
         <thead>
           <tr>
@@ -57,15 +81,33 @@ const Booklist = () => {
               <td>{book.category}</td>
               <td>
                 <button className='btn btn-primary m-1'
-                onClick={handleEdit}
+                onClick={()=>{navigate(`/edit-book/${book.id}`)}}
                 >Edit</button>
-                <button className='btn btn-danger'>Delete</button>
+                <button className="btn"
+                style={{
+                  border: "2px solid #f14d54",
+                  color: "#f14d54",
+                  width: 80,
+                  height: 30,
+                  padding: 3,
+                }}
+                onClick={() => {
+                  setId(book.id);
+                  setOpen(true);
+                }}>Delete</button>
               </td>
             </tr>
           </tbody>
           // <Booktable bookname ={book.name} Price = {book.price} Category = {book.category}  />
         ))}
       </table>
+      <ConfirmationDialog
+      open={open}
+      onClose={() => setOpen(false)}
+      onConfirm={() => handleDelete(id)}
+      title="Delete book"
+      description="Are you sure you want to delete this book?"
+    />
     </div>
   )
 }

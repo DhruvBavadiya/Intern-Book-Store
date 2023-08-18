@@ -13,6 +13,10 @@ import Login from './Pages/login';
 import Navbar from './Components/Navbar';
 import AuthWrapper from './context/authContext';
 import EditBook from './Components/EditBook';
+import UpdateProfile from './Pages/UpdateProf';
+import Cartbox from './Components/Cartbox';
+import { CartContext } from './context/cartContext';
+// import AddBook from './Components/AddBook';
 // import Cookies from "js-cookie";
 
 function App() {
@@ -32,7 +36,8 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
     <BrowserRouter>
-    <AuthWrapper>
+    <useCartContext>
+    <useAuthContext>
     <ToastContainer/>
     <div>
     <Navbar/>
@@ -43,13 +48,17 @@ function App() {
       element={<Login />}
     ></Route>
         <Route path="/" element = {<Homepage/>}  ></Route>
+        <Route path="/edit-book/:id" element = {<EditBook/>}  ></Route>
         <Route path="/edit-book" element = {<EditBook/>}  ></Route>
         <Route path='/books' element = {<Booklist/>}></Route>
         <Route path='/form' element = {<Form/>}></Route>
+        <Route path='/updateprof' element = {<UpdateProfile/>}></Route>
+        <Route path='/cart' element = {<Cartbox/>}></Route>
         <Route path='*' element = {<Pagenot/>}></Route>
 
       </Routes>
-      </AuthWrapper>
+      </useAuthContext>
+      </useCartContext>
     </BrowserRouter>
     </ThemeProvider>
   );
