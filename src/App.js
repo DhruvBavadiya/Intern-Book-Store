@@ -16,6 +16,7 @@ import EditBook from './Components/EditBook';
 import UpdateProfile from './Pages/UpdateProf';
 import Cartbox from './Components/Cartbox';
 import { CartContext } from './context/cartContext';
+import Footer from './Components/Footer';
 // import AddBook from './Components/AddBook';
 // import Cookies from "js-cookie";
 
@@ -57,6 +58,9 @@ function App() {
         <Route path='*' element = {<Pagenot/>}></Route>
 
       </Routes>
+      <div>
+      <Footer/>
+      </div>
       </useAuthContext>
       </useCartContext>
     </BrowserRouter>
